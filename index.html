@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#101114" />
+  <title>Veil of Vesper — A gothic 2D story</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="game-shell">
+    <header class="topbar">
+      <a class="wordmark" href="#" aria-label="Veil of Vesper home"><span class="sigil">✦</span><span>VEIL <i>OF</i> VESPER</span></a>
+      <div class="chapter"><span class="chapter-dot"></span> A GOTHIC STORY <span class="chapter-divider">/</span> VESPER, 1800</div>
+      <button class="icon-button" id="soundBtn" aria-label="Toggle sound" title="Toggle ambience">♫</button>
+    </header>
+
+    <section class="game-layout">
+      <div class="scene-column">
+        <section class="scene-frame" aria-label="Game scene">
+          <canvas id="game" aria-label="Vesper town scene"></canvas>
+          <div class="scene-vignette"></div>
+          <div class="scene-topline">
+            <div class="location"><span class="pin">⌖</span><span id="locationName">THE OLD QUARTER</span></div>
+            <div class="weather"><span class="moon-icon" id="skyIcon">☼</span><span id="skyText">LATE AFTERNOON</span></div>
+          </div>
+          <div class="scene-caption" id="sceneCaption"><span class="caption-mark"></span> THE TOWN IS FULL OF EYES. AND STORIES.</div>
+          <div class="toast" id="toast" aria-live="polite"></div>
+          <div class="mobile-hint" id="mobileHint">TAP A NEIGHBOR TO APPROACH</div>
+        </section>
+        <div class="scene-controls">
+          <div class="move-help"><span class="keycap">W</span><span class="keycap">A</span><span class="keycap">S</span><span class="keycap">D</span><span class="help-label">MOVE</span><span class="help-sep">·</span><span class="keycap">E</span><span class="help-label">INTERACT</span></div>
+          <div class="control-buttons"><button class="ghost-button" id="hideBtn"><span>◒</span> <b>HIDE</b></button><button class="primary-button" id="actionBtn"><span id="actionIcon">☾</span> <b id="actionLabel">WAIT FOR NIGHT</b><span class="button-arrow">→</span></button></div>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="day-card"><div><div class="eyebrow" id="phaseEyebrow">A FRAGILE DISGUISE</div><h1 id="phaseTitle">A face among<br>the living.</h1></div><div class="day-count"><span>NO.</span><strong id="dayNum">01</strong><small>DAY</small></div></div>
+        <p class="story-copy" id="storyCopy">Keep your old hunger quiet. Vesper remembers every strange thing—and the sun is not yet gone.</p>
+        <div class="status-list">
+          <div class="status-row"><div class="status-label"><span class="status-icon heart">♥</span><span>HUNGER</span></div><div class="meter"><div class="meter-fill hunger-fill" id="hungerFill"></div></div><span class="status-value" id="hungerValue">62%</span></div>
+          <div class="status-row"><div class="status-label"><span class="status-icon eye">◉</span><span>SUSPICION</span></div><div class="meter"><div class="meter-fill suspicion-fill" id="suspicionFill"></div></div><span class="status-value" id="suspicionValue">08%</span></div>
+        </div>
+        <div class="objective-card"><div class="objective-heading"><span>TONIGHT'S PURPOSE</span><span class="objective-glyph">✳</span></div><p id="objectiveText">Learn who walks alone after dusk.</p><div class="objective-progress"><span id="objectiveStatus">DAYLIGHT HOURS</span><span class="progress-dots" id="progressDots"><i class="active"></i><i></i><i></i></span></div></div>
+        <div class="people-heading"><span>PEOPLE OF VESPER</span><span id="peopleCount">03</span></div>
+        <div class="people-list" id="peopleList"></div>
+        <div class="journal-note"><span class="note-icon">✧</span><span id="journalText">“A good name is a door with many locks.”</span></div>
+        <div class="sidebar-footer"><span>THE VEIL MUST HOLD</span><span class="footer-mark">✦</span></div>
+      </aside>
+    </section>
+    <footer class="bottomline"><span>AN UNQUIET HEART</span><span>“THE NIGHT IS KIND TO THOSE WHO KEEP THEIR SECRETS.”</span><span>V. 1800 <i>✦</i></span></footer>
+  </main>
+
+  <div class="dialogue-backdrop" id="dialogue" aria-hidden="true">
+    <section class="dialogue-card" role="dialog" aria-modal="true" aria-labelledby="dialogueName">
+      <button class="dialogue-close" id="dialogueClose" aria-label="Close dialogue">×</button>
+      <div class="dialogue-top"><span class="dialogue-portrait" id="portrait">M</span><div><div class="eyebrow" id="dialogueRole">NEIGHBOR</div><h2 id="dialogueName">Mara Bell</h2></div><span class="speech-mark">“</span></div>
+      <p class="dialogue-line" id="dialogueLine"></p>
+      <div class="choice-list" id="choiceList"></div>
+    </section>
+  </div>
+  <div class="ending-backdrop" id="ending" aria-hidden="true"><section class="ending-card"><span class="ending-star">✦</span><div class="eyebrow">THE VEIL OF VESPER</div><h2 id="endingTitle">A quiet dawn.</h2><p id="endingCopy"></p><button class="primary-button" id="restartBtn"><b>BEGIN AGAIN</b><span class="button-arrow">→</span></button></section></div>
+  <div class="touch-controls" aria-label="Touch movement controls"><div class="dpad"><button data-dir="up" aria-label="Move up">▲</button><button data-dir="left" aria-label="Move left">◀</button><button data-dir="down" aria-label="Move down">▼</button><button data-dir="right" aria-label="Move right">▶</button></div><button id="touchInteract" class="touch-interact">TALK / ACT</button></div>
+  <script src="game.js"></script>
+</body>
+</html>
